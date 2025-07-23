@@ -10,5 +10,6 @@ namespace ManagementSystem.Services.Interfaces
         IEnumerable<Item> GetAllItems();
         // int GetQuantityByBrand(Brand brand);
         // int GetQuantityByType<T>() where T : Item;
+        Item UpdateItemInfo(int id, Item updatedItem);
     }
 }
