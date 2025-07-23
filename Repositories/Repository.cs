@@ -14,9 +14,20 @@ namespace ManagementSystem.Repositories
 
         public IEnumerable<T> GetAll() => _repo;
 
-        public void Add(T item)
+        public void Add(T item) => _repo.Add(item);
+
+        public void Update(int id, T updatedItem)
         {
-            _repo.Add(item);
+            var item = _repo.FirstOrDefault(i => i.Id == id);
+            if (item != null)
+            {
+                _repo.Remove(item);
+                _repo.Add(updatedItem);
+            }
+            else
+            {
+                throw new KeyNotFoundException($"Item with ID {id} not found.");
+            }
         }
     }
 }

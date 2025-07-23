@@ -9,5 +9,6 @@ namespace ManagementSystem.Repositories.Interfaces
         IEnumerable<T> GetAll();
         // int CountByType<T>() where T : Item;
         // int CountByBrand(Brand brand);
+        void Update(int id, T updatedItem);
     }
 }
