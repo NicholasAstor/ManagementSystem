@@ -9,5 +9,6 @@ namespace ManagementSystem.Services.Interfaces
         // void OutOfProducts(int id);
         // int GetQuantityByBrand(Brand brand);
         // int GetQuantityByType<T>() where T : Item;
+        Item UpdateItemInfo(int id, Item updatedItem);
     }
 }
