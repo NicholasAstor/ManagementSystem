@@ -1,48 +1,95 @@
-﻿/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+﻿#sidebar {
+  box-sizing: border-box;
+  height: 100vh;
+  width: 250px;
+  padding: 5px 1em;
+  background-color: #c8deef;
+  position: sticky;
+  top: 0;
+  align-self: start;
 }
 
-a {
-  color: #0077cc;
+#sidebar ul {
+  list-style: none;
 }
 
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+/* CORRECTED and MERGED LOGO CONTAINER:
+  Assuming your first <li> has class="logo-container"
+*/
+#sidebar .logo-container {
+  display: flex;
+  align-items: center; /* Vertically centers logo and text */
+  gap: 10px;           /* Space between logo and text */
+  margin-bottom: 16px;
 }
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+/* Rule for the logo's text */
+#sidebar .logo-container .logo {
+  font-weight: 600;
+  font-size: x-large;
 }
 
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
+#sidebar ul li.active a {
+  color: #006ec4;
 }
 
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+/* CORRECTED SVG RULE */
+#sidebar ul li.active a svg {
+  fill: #006ec4;
 }
 
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
+#sidebar a,
+#sidebar .dropdown-btn { /* Removed .logo from here to avoid conflict */
+  border-radius: .5em;
+  padding: .85em;
+  text-decoration: none;
+  color: var(--text-clr);
+  display: flex;
+  align-items: center;
+  gap: 1em;
 }
 
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px;
+.dropdown-btn {
+  width: 100%; /* Changed to 100% to fill the space */
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit; /* Ensures button font matches the rest */
+  font-size: inherit;   /* Ensures button font size matches */
+}
+
+#sidebar svg {
+  flex-shrink: 0;
+  fill: var(--text-clr);
+}
+
+#sidebar a span,
+#sidebar .dropdown-btn span {
+  flex-grow: 1;
+}
+
+#sidebar a:hover,
+#sidebar .dropdown-btn:hover {
+  background-color: var(--hover-clr);
+}
+
+#sidebar .sub-menu {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: 300ms ease-in-out;
+}
+
+/* CORRECTED SUB-MENU DIV RULE */
+#sidebar .sub-menu > div {
+  overflow: hidden;
+}
+
+#sidebar .sub-menu.show {
+  grid-template-rows: 1fr;
+}
+
+#sidebar .logo-image {
+  width: 60px; /* Now this should work! */
+  height: auto;
 }
