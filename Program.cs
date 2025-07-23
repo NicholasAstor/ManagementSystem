@@ -1,9 +1,16 @@
+using ManagementSystem.Models;
+using ManagementSystem.Models.DTOs;
+using ManagementSystem.Repositories;
+using ManagementSystem.Repositories.Interfaces;
+using ManagementSystem.Services;
+using ManagementSystem.Services.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddSingleton(typeof(ManagementSystem.Repositories.Interfaces.IRepository<>), typeof(ManagementSystem.Repositories.Repository<>));
-builder.Services.AddSingleton<ManagementSystem.Services.Interfaces.IStockService, ManagementSystem.Services.StockService>();
+builder.Services.AddSingleton<IRepository<Footwear, FootwearGetAllDTO>, FootwearRepository>();
+builder.Services.AddSingleton<IService<Footwear, FootwearGetAllDTO>, FootwearService>();
 
 var app = builder.Build();
 
