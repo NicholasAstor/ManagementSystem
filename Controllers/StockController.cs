@@ -1,32 +1,64 @@
-using ManagementSystem.Models;
-using ManagementSystem.Models.Enum;
-using ManagementSystem.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.WebEncoders.Testing;
+using ManagementSystem.Models;
+using ManagementSystem.Services.Interfaces;
+
 
 namespace ManagementSystem.Controllers
 {
     public class StockController : Controller
     {
-        private readonly IStockService _stockService;
+        private readonly IStockRepository _repository;
 
-        public StockController(IStockService stockService)
+        public StockController(IStockRepository repository)
         {
-            _stockService = stockService;
+            _repository = repository;
         }
-
-        public IActionResult Index()
+        
+        //Get  Stock/AddFootwear
+        [HttpGet]
+        public IActionResult AddFootwear()
         {
-            var items = _stockService.GetAllItems();
+            return View();
+        }
+        
+        //Post   Stock/AddFootwear
+        [HttpPost]
+        public IActionResult AddFootwear(Footwear footwear)
+        {
+            if (ModelState.IsValid)
+            {
+                _repository.Add(footwear);
+                TempData["Success"] = "Item added successfully";
+                return RedirectToAction("List");
+            }
+
+            return View(footwear);
+        }
+        
+        //Get   Stock/List
+        public IActionResult List()
+        {
+            var items = _repository.GetAll();
             return View(items);
         }
-
-        [HttpPost("stock/add")]
-        public ActionResult<Item> Add([FromForm] string sku, [FromForm] Brand brand, [FromForm] Modalities modalities, [FromForm] string name, [FromForm] string? image, [FromForm] string description, [FromForm] double price, [FromForm] DateTime? manufacturedIn, [FromForm] byte size, [FromForm] TypeOfFootwear typeOfFootwear)
+        
+        [HttpGet]
+        public IActionResult AddEquipment()
         {
-            var item = new Footwear(sku, Brand.Nike, Modalities.Futebol, name, image, description, price, new DateTime(2005, 03, 21), size, TypeOfFootwear.Society);
-            _stockService.EntryOfProducts(item);
-            return Ok(item);
+            return View(); 
+        }
+        
+        [HttpPost]
+        public IActionResult AddEquipment(Equipment equipment)
+        {
+            if (ModelState.IsValid)
+            {
+                _repository.Add(equipment);
+                TempData["Success"] = "Equipment added successfully!";
+                return RedirectToAction("List");
+            }
+
+            return View(equipment);
         }
     }
 }

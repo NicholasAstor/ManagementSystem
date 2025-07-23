@@ -1,62 +1,132 @@
 @model ManagementSystem.Models.Footwear
-
 @{
-    ViewData["Title"] = "Add Footwear";
+    ViewData["Title"] = "Adicionar novo item";
 }
-<h2>@ViewData["Title"]</h2>
 
-<form asp-action="AddFootwear" method="post">
-    <div asp-validation-summary="All" class="text-danger"></div>
+<h2 class="mb-4 fw-bold">Adicionar novo item</h2>
 
-    <div class="form-group">
-        <label asp-for="Size"></label>
-        <input asp-for="Size" class="form-control" />
-        <span asp-validation-for="Size" class="text-danger"></span>
+<form asp-action="AddFootwear" method="post" enctype="multipart/form-data">
+    <div class="row">
+        <!-- Coluna Esquerda -->
+        <div class="col-md-6">
+
+            <!-- Checkboxes -->
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="groupItem">
+                <label class="form-check-label" for="groupItem">Group Item</label>
+            </div>
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="consumableItem">
+                <label class="form-check-label" for="consumableItem">Consumable Item</label>
+            </div>
+
+            <!-- Tipo -->
+            <div class="mb-3">
+                <label class="form-label">Tipo *</label>
+                <select name="Type.Id" class="form-select">
+                    <option value="">Escolha o tipo</option>
+                    @foreach (var type in ViewBag.Types)
+                    {
+                        <option value="@type.Id" selected="@(Model.Type?.Id == type.Id ? "selected" : null)">
+                            @type.Name
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <!-- Imagem -->
+            <div class="mb-3">
+                <label class="form-label">Imagem *</label>
+                <input type="file" name="ImageFile" class="form-control" />
+            </div>
+
+            <!-- Marca -->
+            <div class="mb-3">
+                <label class="form-label">Marca *</label>
+                <select name="brand.Id" class="form-select">
+                    <option value="">Escolha a marca</option>
+                    @foreach (var brand in ViewBag.Brands)
+                    {
+                        <option value="@brand.Id" @(Model.brand?.Id == brand.Id ? "selected" : "")>@brand.Name</option>
+                    }
+                </select>
+            </div>
+
+            <!-- Gênero -->
+            <div class="mb-3">
+                <label class="form-label">Gênero *</label>
+                <select class="form-select" name="Gender">
+                    <option value="">Escolha o gênero</option>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Feminino">Feminino</option>
+                    <option value="Unissex">Unissex</option>
+                </select>
+            </div>
+
+            <!-- Preço -->
+            <div class="mb-3">
+                <label asp-for="Price" class="form-label">Preço *</label>
+                <input asp-for="Price" class="form-control" placeholder="Escreva o preço" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            <!-- SKU -->
+            <div class="mb-3">
+                <label asp-for="SKU" class="form-label">SKU *</label>
+                <input asp-for="SKU" class="form-control" placeholder="Escreva o SKU" />
+                <span asp-validation-for="SKU" class="text-danger"></span>
+            </div>
+        </div>
+
+        <!-- Coluna Direita -->
+        <div class="col-md-6">
+
+            <!-- Nome -->
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label">Nome do item *</label>
+                <input asp-for="Name" class="form-control" placeholder="Escreva o nome do item" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <!-- Tamanho -->
+            <div class="mb-3">
+                <label asp-for="Size" class="form-label">Tamanho *</label>
+                <input asp-for="Size" class="form-control" placeholder="Tamanho" />
+                <span asp-validation-for="Size" class="text-danger"></span>
+            </div>
+
+            <!-- Modelo -->
+            <div class="mb-3">
+                <label class="form-label">Modelo *</label>
+                <input type="text" name="Model" class="form-control" placeholder="Escreva o modelo" />
+            </div>
+
+            <!-- Quantidade -->
+            <div class="mb-3">
+                <label class="form-label">Quantidade *</label>
+                <input type="number" name="Quantity" class="form-control" placeholder="Escreva a quantidade de itens" />
+            </div>
+
+            <!-- Fabricado em -->
+            <div class="mb-3">
+                <label class="form-label">Fabricado em *</label>
+                <input type="date" name="ManufactureDate" class="form-control" />
+            </div>
+
+            <!-- Descrição -->
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label">Descrição *</label>
+                <textarea asp-for="Description" class="form-control" rows="3" placeholder="Escreva a descrição do produto"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label asp-for="Type"></label>
-        <select asp-for="Type" asp-items="Html.GetEnumSelectList<Type>()" class="form-control"></select>
-        <span asp-validation-for="Type" class="text-danger"></span>
+    <!-- Botões -->
+    <div class="d-flex justify-content-end gap-3 mt-4">
+        <a asp-action="List" class="btn btn-outline-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-primary">Adicionar</button>
     </div>
-
-    <div class="form-group">
-        <label asp-for="SKU"></label>
-        <input asp-for="SKU" class="form-control" />
-        <span asp-validation-for="SKU" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="brand"></label>
-        <select asp-for="brand" asp-items="Html.GetEnumSelectList<Brand>()" class="form-control"></select>
-        <span asp-validation-for="brand" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Modalities"></label>
-        <select asp-for="Modalities" asp-items="Html.GetEnumSelectList<Modalities>()" class="form-control"></select>
-        <span asp-validation-for="Modalities" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Description"></label>
-        <textarea asp-for="Description" class="form-control"></textarea>
-        <span asp-validation-for="Description" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Price"></label>
-        <input asp-for="Price" class="form-control" />
-        <span asp-validation-for="Price" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Cadastrar</button>
 </form>
 
 @section Scripts {
