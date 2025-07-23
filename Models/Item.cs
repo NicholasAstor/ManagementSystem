@@ -8,9 +8,9 @@ namespace ManagementSystem.Models
         public Brand brand { get; set; } // Marca do item: Nike, Adidas
         public Modalities Modalities { get; set; } // Tipo do item: Futebol, Basquete
         public string Name { get; set; }
-        public string Image { get; set; } // Ainda vou pensar melhor se vamos armazenar o path ou um link da imagem, se formos trabalhar com JSON pode acabar sendo diferente
+        public string? Image { get; set; } // Ainda vou pensar melhor se vamos armazenar o path ou um link da imagem, se formos trabalhar com JSON pode acabar sendo diferente
         public string Description { get; set; }
         public double Price { get; set; } // Poderia ser float, caso o programa venha a ser pesado pode ser alterado
-        public DateTime ManufacturedIn { get; set; }
+        public DateTime? ManufacturedIn { get; set; }
     }
 }

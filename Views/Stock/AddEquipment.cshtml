@@ -1,0 +1,71 @@
+@model ManagementSystem.Models.Equipment
+
+@{
+    ViewData["Title"] = "Add Equipment";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="AddEquipment" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="Specifications"></label>
+        <textarea asp-for="Specifications" class="form-control"></textarea>
+        <span asp-validation-for="Specifications" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SKU"></label>
+        <input asp-for="SKU" class="form-control" />
+        <span asp-validation-for="SKU" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="brand"></label>
+        <select asp-for="brand" asp-items="Html.GetEnumSelectList<Brand>()" class="form-control"></select>
+        <span asp-validation-for="brand" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Modalities"></label>
+        <select asp-for="Modalities" asp-items="Html.GetEnumSelectList<Modalities>()" class="form-control"></select>
+        <span asp-validation-for="Modalities" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Price"></label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Image"></label>
+        <input asp-for="Image" class="form-control" />
+        <span asp-validation-for="Image" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ManufacturedIn"></label>
+        <input asp-for="ManufacturedIn" type="date" class="form-control" />
+        <span asp-validation-for="ManufacturedIn" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Cadastrar</button>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
