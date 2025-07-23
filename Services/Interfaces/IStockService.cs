@@ -5,8 +5,9 @@ namespace ManagementSystem.Services.Interfaces
 {
     public interface IStockService // De novo só fiz alguns exemplos, não precisamos fazer exatamente assim
     {
-        // void EntryOfProducts(Item item);
+        void EntryOfProducts(Item item);
         // void OutOfProducts(int id);
+        IEnumerable<Item> GetAllItems();
         // int GetQuantityByBrand(Brand brand);
         // int GetQuantityByType<T>() where T : Item;
     }

@@ -2,11 +2,11 @@ using ManagementSystem.Models;
 
 namespace ManagementSystem.Repositories.Interfaces
 {
-    public interface IStockRepository // Alguns exemplos, não precisamos fazer desse jeito
+    public interface IRepository<T> where T : Item
     {
-        // void Add(Item item);
+        void Add(T item);
         // void Delete(int id);
-        // IEnumerable<Item> GetAll();
+        IEnumerable<T> GetAll();
         // int CountByType<T>() where T : Item;
         // int CountByBrand(Brand brand);
     }

@@ -1,6 +1,6 @@
 namespace ManagementSystem.Models.Enum
 {
-    public enum Type
+    public enum TypeOfFootwear
     {
         Futsal, Society, Trava
     }
