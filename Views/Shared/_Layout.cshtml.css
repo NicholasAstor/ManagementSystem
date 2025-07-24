@@ -88,7 +88,8 @@
 }
 
 .sub-menu li {
-    padding: 0.5em 0;
+    padding: 0em 0;
+    margin-left: 0.8em;
 }
 
 .sub-menu li a {
@@ -115,6 +116,8 @@
     align-items: center;
     justify-content: space-between;
     cursor: pointer;
+    padding-right: 20em;
+    padding-left: 0em;
 }
 
 .dropdown-toggle {
@@ -174,6 +177,11 @@ body {
     position: absolute;
     left: 15px;
     color: #aaa;
+}
+
+.header-search svg {
+    position: absolute;
+    left: 10px;
 }
 
 .header-search input {
