@@ -1,59 +1,92 @@
 ﻿#sidebar {
-  font-size: 1em;
-  box-sizing: border-box;
-  height: 100vh;
-  width: 300px;
-  padding: 10px 0em;
-  background-color: #c8deef;
-  position: sticky;
-  top: 0;
-  align-self: start;
+    font-size: 1em;
+    box-sizing: border-box;
+    height: calc(100vh - 40px); /* Ajuste para considerar a margem */
+    width: 300px;
+    padding: 10px 1em;
+    background-color: #c8deef;
+    position: fixed;
+    top: 20px; 
+    left: 20px; 
+    border-radius: 20px;
 }
 
 #sidebar ul {
-  list-style: none;
+    list-style: none;
+    padding: 0; /* É uma boa prática zerar o padding da lista */
 }
 
 #sidebar ul li.active a {
+  font-weight: 600;
   color: #006ec4;
+  background-color: #bed8ed; 
 }
 
 #sidebar ul li.active a svg {
-  fill: #006ec4;
+    fill: #006ec4;
 }
 
 #sidebar a,
-#sidebar .dropdown-btn { 
-  border-radius: .5em;
-  padding: .85em;
-  text-decoration: none;
-  color: var(--text-clr);
-  display: flex;
-  align-items: center;
-  gap: 1em;
+#sidebar .dropdown-btn {
+    border-radius: .5em;
+    padding: .85em;
+    text-decoration: none;
+    color: #334; 
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    transition: all 0.2s ease-in-out;
 }
 
+#sidebar a:hover,
+#sidebar .dropdown-btn:hover,
+.nav-text:hover{
+    background-color: #bed8ed;
+    color: #006ec4;
+}
 
 #sidebar svg {
-  flex-shrink: 0;
-  fill: var(--text-clr);
+    flex-shrink: 0;
+    fill: #334;
+}
+
+#sidebar .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 1em;
+    justify-content: flex-start;
+}
+
+.logo-img {
+    max-width: 70px;
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+
+#sidebar .logo-text {
+    font-weight: 600;
+    font-size: x-large;
+    color: #334;
+    text-decoration: nowrap;
+}
+
+.nav-text {
+    font-size: 1.2em;
+    
 }
 
 #sidebar a span,
 #sidebar .dropdown-btn span {
-  flex-grow: 1;
-}
-
-#sidebar a:hover,
-#sidebar .dropdown-btn:hover {
-  background-color: var(--hover-clr);
+    flex-grow: 1;
 }
 
 .sub-menu {
     display: none;
     padding-left: 1.5em;
     transition: all 0.3s ease;
-
+    align-items:center;
 }
 
 .sub-menu li {
@@ -74,47 +107,9 @@
     width: 100%;
     background: none;
     border: none;
-    padding: .85em;
-    display: flex;
-    align-items: center;
-    gap: 1em;
-    cursor: pointer; 
+    cursor: pointer;
     text-align: left;
-
     justify-content: space-between;
-}
-
-#sidebar .logo-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 1em;
-  padding: 1em 0.5em 1em 0;
-  justify-content: flex-start;
-}
-
-#sidebar {
-  border-radius: 20px;
-  margin: 20px;
-}
-
-.logo-img {
-    max-width: 70px;
-    height: auto;
-    object-fit: contain;
-    display: block;
-}
-
-#sidebar .logo-text{
-  font-weight: 600;
-  font-size: x-large;
-  color: var(--text-clr);
-  text-decoration: nowrap;
-}
-
-.nav-text {
-    font-size: 1.2em;
-    color: #000000b6 !important;       
 }
 
 .dropdown-header {
@@ -122,7 +117,7 @@
     align-items: center;
     justify-content: space-between;
     padding-left: 0em;
-    padding-right: 14em;
+    padding-right: 20em;
     cursor: pointer;
 }
 
@@ -133,4 +128,116 @@
     font-size: 1em;
     padding: 0.5em;
     line-height: 1;
+}
+
+
+body {
+    background-color: #f4f7fa; 
+}
+
+/* IMPORTANTE: Esta classe envolve o Header e o @RenderBody() */
+.main-content {
+    /* cria o espaço para a sidebar fixa */
+    margin-left: 340px; /* 300px da sidebar + 20px de margem de cada lado */
+    flex-grow: 1;
+    padding: 20px 30px;
+    width: calc(100% - 340px); /* Garante que o conteúdo não exceda a tela */
+}
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 15px 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    margin-bottom: 25px;
+}
+
+/* Estilos da Saudação */
+.header-greeting h3 {
+    margin: 0;
+    font-size: 1.4rem;
+    color: #333;
+    font-weight: 600;
+}
+
+.header-greeting p {
+    margin: 0;
+    color: #888;
+}
+
+.header-search {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 350px;
+}
+
+.header-search i {
+    position: absolute;
+    left: 15px;
+    color: #aaa;
+}
+
+.header-search input {
+    width: 100%;
+    padding: 10px 15px 10px 40px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    background-color: #f8f9fa;
+    transition: all 0.3s ease;
+}
+
+.header-search input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0,123,255,0.25);
+}
+
+.header-user {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.notification-icon i {
+    font-size: 1.5rem;
+    color: #555;
+    cursor: pointer;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.user-profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.user-info .user-name {
+    font-weight: bold;
+    color: #333;
+}
+
+.user-info .user-role {
+    font-size: 0.8rem;
+    color: #777;
+}
+
+.user-profile i.fa-chevron-down {
+    color: #888;
 }
