@@ -2,13 +2,12 @@ using ManagementSystem.Models;
 
 namespace ManagementSystem.Repositories.Interfaces
 {
-    public interface IRepository<T> where T : Item
+    public interface IRepository<T, Y> where T : Item
     {
         void Add(T item);
-        // void Delete(int id);
-        IEnumerable<T> GetAll();
-        // int CountByType<T>() where T : Item;
-        // int CountByBrand(Brand brand);
+        void Delete(int id);
+        IEnumerable<Y> GetAll();
         void Update(int id, T updatedItem);
+        T GetById(int id);
     }
 }

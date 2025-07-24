@@ -1,64 +1,34 @@
-using Microsoft.AspNetCore.Mvc;
 using ManagementSystem.Models;
+using ManagementSystem.Models.DTOs;
+using ManagementSystem.Models.Enum;
 using ManagementSystem.Services.Interfaces;
-
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.WebEncoders.Testing;
 
 namespace ManagementSystem.Controllers
 {
     public class StockController : Controller
     {
-        private readonly IStockRepository _repository;
+        private readonly IService<Footwear, FootwearGetAllDTO> _service;
 
-        public StockController(IStockRepository repository)
+        public StockController(IService<Footwear, FootwearGetAllDTO> service)
         {
-            _repository = repository;
+            _service = service;
         }
-        
-        //Get  Stock/AddFootwear
-        [HttpGet]
-        public IActionResult AddFootwear()
-        {
-            return View();
-        }
-        
-        //Post   Stock/AddFootwear
-        [HttpPost]
-        public IActionResult AddFootwear(Footwear footwear)
-        {
-            if (ModelState.IsValid)
-            {
-                _repository.Add(footwear);
-                TempData["Success"] = "Item added successfully";
-                return RedirectToAction("List");
-            }
 
-            return View(footwear);
-        }
-        
-        //Get   Stock/List
-        public IActionResult List()
+        [HttpGet("stock")]
+        public IActionResult Index()
         {
-            var items = _repository.GetAll();
-            return View(items);
+            var items = _service.GetAllItems();
+            return Ok(items);    
         }
-        
-        [HttpGet]
-        public IActionResult AddEquipment()
-        {
-            return View(); 
-        }
-        
-        [HttpPost]
-        public IActionResult AddEquipment(Equipment equipment)
-        {
-            if (ModelState.IsValid)
-            {
-                _repository.Add(equipment);
-                TempData["Success"] = "Equipment added successfully!";
-                return RedirectToAction("List");
-            }
 
-            return View(equipment);
+        [HttpPost("stock/add")]
+        public ActionResult<Item> Add([FromForm] string sku, [FromForm] Brand brand, [FromForm] Modalities modalities, [FromForm] string name, [FromForm] string? image, [FromForm] string description, [FromForm] double price, [FromForm] DateTime? manufacturedIn, [FromForm] byte size, [FromForm] TypeOfFootwear typeOfFootwear)
+        {
+            var item = new Footwear(sku, Brand.Nike, Modalities.Futebol, name, image, description, price, new DateTime(2005, 03, 21), size, TypeOfFootwear.Society);
+            _service.EntryOfProducts(item);
+            return Ok(item);
         }
     }
 }
