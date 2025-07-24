@@ -5,7 +5,8 @@
 <h2 class="mb-4 fw-bold text-primary">Cadastro de Produto</h2>
 
 <div class="card shadow p-4 mb-5">
-    <form action="/stock/add" method="post">
+    <form asp-asp-controller="Footwear" asp-action="Create" method="post">
+        <input type="hidden" name="returnUrl" value="@Context.Request.Headers["Referer"]" />
         <h5 class="text-secondary mb-3">
             <img src="~/images/informaçao.png" width="25" class="me-2" />
             Informações Gerais
@@ -21,17 +22,17 @@
 
             <div class="col-md-6 mb-3">
                 <label class="form-label">SKU</label>
-                <input type="text" name="sku" class="form-control" required />
+                <input type="text" name="SKU" class="form-control" required />
             </div>
 
             <div class="col-md-6 mb-3">
                 <label class="form-label">Nome</label>
-                <input type="text" name="name" class="form-control" required />
+                <input type="text" name="Name" class="form-control" required />
             </div>
 
             <div class="col-md-6 mb-3">
                 <label class="form-label">Marca</label>
-                <select name="brand" class="form-control">
+                <select name="Brand" class="form-control">
                     <option value="Nike">Nike</option>
                     <option value="Adidas">Adidas</option>
                     <option value="Puma">Puma</option>
@@ -48,33 +49,36 @@
 
             <div class="col-md-6 mb-3">
                 <label class="form-label">Modalidade</label>
-                <select name="modalities" class="form-control">
+                <select name="Modalities" class="form-control">
                     <option value="Futebol">Futebol</option>
                     <option value="Futsal">Futsal</option>
                     <option value="Fut7">Fut7</option>
                     <option value="Corrida">Corrida</option>
                     <option value="Musculação">Musculação</option>
+                    <option value="Basquete">Basquete</option>
+                    <option value="Tênis">Tênis</option>
+                    <option value="Vôlei">Vôlei</option>
                 </select>
             </div>
 
             <div class="col-md-6 mb-3">
                 <label class="form-label">Preço</label>
-                <input type="number" name="price" step="0.01" class="form-control" />
+                <input type="number" name="Price" step="0.01" class="form-control" />
             </div>
 
             <div class="col-md-12 mb-3">
                 <label class="form-label">Descrição</label>
-                <textarea name="description" class="form-control" rows="3"></textarea>
+                <textarea name="Description" class="form-control" rows="3"></textarea>
             </div>
 
             <div class="col-md-6 mb-3">
                 <label class="form-label">Data de Fabricação</label>
-                <input type="date" name="manufacturedIn" class="form-control" />
+                <input type="date" name="ManufacturedIn" class="form-control" />
             </div>
 
             <div class="col-md-6 mb-3">
                 <label class="form-label">Imagem (URL)</label>
-                <input type="text" name="image" class="form-control" />
+                <input type="text" name="Image" class="form-control" />
             </div>
         </div>
 
@@ -87,15 +91,17 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Tamanho</label>
-                    <input type="number" name="size" class="form-control" />
+                    <input type="number" name="Size" class="form-control" />
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Tipo de Calçado</label>
-                    <select name="typeOfFootwear" class="form-control">
-                        <option value="Esportivo">Esportivo</option>
+                    <select name="TypeOfFootwear" class="form-control">
                         <option value="Corrida">Corrida</option>
                         <option value="Social">Social</option>
+                        <option value="Casual">Casual</option>
                         <option value="Futsal">Futsal</option>
+                        <option value="Society">Society</option>
+                        <option value="Trava">Trava</option>
                     </select>
                 </div>
             </div>
@@ -136,6 +142,6 @@
         }
     }
 
-    // Exibe calçado como padrão
     toggleFields("Footwear");
+
 </script>

@@ -40,12 +40,13 @@ namespace ManagementSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(FootwearCreateViewModel model)
+        public IActionResult Create(FootwearCreateViewModel model, string? returnUrl)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
+                    model.Image = "";
                     var footwear = new Footwear(
                         model.SKU,
                         model.Brand,
@@ -62,6 +63,12 @@ namespace ManagementSystem.Controllers
                     _footwearService.EntryOfProducts(footwear);
 
                     TempData["SuccessMessage"] = "Calçado adicionado com sucesso!";
+
+                    if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                    {
+                        return Redirect(returnUrl);
+                    }
+
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
