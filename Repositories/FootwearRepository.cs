@@ -1,5 +1,6 @@
 using ManagementSystem.Models;
 using ManagementSystem.Models.DTOs;
+using ManagementSystem.Models.Enum;
 using ManagementSystem.Repositories.Interfaces;
 
 namespace ManagementSystem.Repositories
@@ -11,8 +12,18 @@ namespace ManagementSystem.Repositories
 
         public FootwearRepository()
         {
-            _listFootwears = new List<Footwear>();
-            _footwearsDict = new Dictionary<string, int>();
+            _listFootwears = new List<Footwear>() // Tirar essas coisas mockadas depois
+            {
+                new Footwear("SKU001", Brand.Nike, Modalities.Futebol, "Nike Mercurial", "", "High performance soccer footwear", 120.00, DateTime.Now, 42, TypeOfFootwear.Futsal),
+                new Footwear("SKU002", Brand.Adidas, Modalities.Futebol, "Adidas Predator", "", "Precision and control on the field", 130.00, DateTime.Now, 41, TypeOfFootwear.Trava),
+                new Footwear("SKU003", Brand.Puma, Modalities.Futebol, "Puma Future", "", "Innovative design for agility", 125.00, DateTime.Now, 43, TypeOfFootwear.Society)
+            };
+            _footwearsDict = new Dictionary<string, int>()
+            {
+                { "SKU001", 1 },
+                { "SKU002", 2 },
+                { "SKU003", 3 }
+            };
         }
 
         public void Add(Footwear item)

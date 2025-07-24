@@ -1,0 +1,181 @@
+using ManagementSystem.Models;
+using ManagementSystem.Models.ViewModel;
+using ManagementSystem.Models.DTOs;
+using ManagementSystem.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+
+namespace ManagementSystem.Controllers
+{
+    public class FootwearController : Controller
+    {
+        private readonly IService<Footwear, FootwearGetAllDTO> _footwearService;
+
+        public FootwearController(IService<Footwear, FootwearGetAllDTO> footwearService)
+        {
+            _footwearService = footwearService;
+        }
+
+        public IActionResult Index()
+        {
+            var footwearItems = _footwearService.GetAllItems();
+            return View(footwearItems);
+        }
+
+        public IActionResult Details(int id)
+        {
+            var footwear = _footwearService.GetById(id);
+
+            if (footwear == null)
+            {
+                return NotFound();
+            }
+
+            return View(footwear);
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(FootwearCreateViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var footwear = new Footwear(
+                        model.SKU,
+                        model.Brand,
+                        model.Modalities,
+                        model.Name,
+                        model.Image,
+                        model.Description,
+                        model.Price,
+                        model.ManufacturedIn,
+                        model.Size,
+                        model.TypeOfFootwear
+                    );
+
+                    _footwearService.EntryOfProducts(footwear);
+
+                    TempData["SuccessMessage"] = "Calçado adicionado com sucesso!";
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", $"Erro ao criar calçado: {ex.Message}");
+                }
+            }
+
+            return View(model);
+        }
+
+        public IActionResult Edit(int id)
+        {
+            var footwear = _footwearService.GetById(id);
+
+            if (footwear == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new FootwearEditViewModel
+            {
+                Id = footwear.Id,
+                SKU = footwear.SKU,
+                Brand = footwear.Brand,
+                Modalities = footwear.Modalities,
+                Name = footwear.Name,
+                Image = footwear.Image,
+                Description = footwear.Description,
+                Price = footwear.Price,
+                ManufacturedIn = footwear.ManufacturedIn,
+                Size = footwear.Size,
+                TypeOfFootwear = footwear.TypeOfFootwear
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, FootwearEditViewModel model)
+        {
+            if (id != model.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var updatedFootwear = new Footwear(
+                        model.SKU,
+                        model.Brand,
+                        model.Modalities,
+                        model.Name,
+                        model.Image,
+                        model.Description,
+                        model.Price,
+                        model.ManufacturedIn,
+                        model.Size,
+                        model.TypeOfFootwear
+                    );
+
+                    _footwearService.UpdateItemInfo(id, updatedFootwear);
+
+                    TempData["SuccessMessage"] = "Calçado atualizado com sucesso!";
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", $"Erro ao atualizar calçado: {ex.Message}");
+                }
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                var footwear = _footwearService.GetById(id);
+
+                if (footwear == null)
+                {
+                    TempData["ErrorMessage"] = "Calçado não encontrado.";
+                    return RedirectToAction(nameof(Index));
+                }
+
+                _footwearService.OutOfProducts(id);
+                TempData["SuccessMessage"] = "Calçado excluído com sucesso!";
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Erro ao excluir calçado: {ex.Message}";
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public JsonResult UpdateQuantity([FromBody] UpdateQuantityRequest request)
+        {
+            try
+            {
+                return Json(new { success = true, newQuantity = request.Quantity });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+    }
+}

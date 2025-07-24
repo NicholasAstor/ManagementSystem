@@ -1,0 +1,328 @@
+@model IEnumerable<ManagementSystem.Models.DTOs.FootwearGetAllDTO>
+
+@{
+    ViewData["Title"] = "Inventário de Calçados Esportivos";
+    var footwearList = Model?.ToList();
+    var totalItems = footwearList.Count();
+}
+<head>
+    <link rel="stylesheet" href="~/css/Footwear.css" asp-append-version="true" />
+</head>
+
+
+<div class="container">
+    <div class="header">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Pesquisar itens" />
+            <span class="search-icon">🔍</span>
+        </div>
+        <div class="header-buttons">
+            <a href="@Url.Action("Create", "Footwear")" class="btn btn-primary">
+                📦 Adicionar Item
+            </a>
+            <button class="btn btn-secondary" onclick="toggleFilters()">
+                🔧 Filtro
+            </button>
+        </div>
+    </div>
+
+    <div class="filters-panel" id="filtersPanel" style="display: none;">
+        <div class="filter-row">
+            <select id="brandFilter">
+                <option value="">Todas as marcas</option>
+                @foreach (var brand in footwearList.Select(f => f.Footwear.Brand).Distinct().OrderBy(b => b.ToString()))
+                {
+                    <option value="@brand">@brand</option>
+                }
+            </select>
+            
+            <select id="modalityFilter">
+                <option value="">Todas as modalidades</option>
+                @foreach (var modality in footwearList.Select(f => f.Footwear.Modalities).Distinct().OrderBy(m => m.ToString()))
+                {
+                    <option value="@modality">@modality</option>
+                }
+            </select>
+            
+            <select id="typeFilter">
+                <option value="">Todos os tipos</option>
+                @foreach (var type in footwearList.Select(f => f.Footwear.TypeOfFootwear).Distinct().OrderBy(t => t.ToString()))
+                {
+                    <option value="@type">@type</option>
+                }
+            </select>
+            
+            <button class="btn btn-primary" onclick="applyFilters()">Aplicar Filtros</button>
+            <button class="btn btn-secondary" onclick="clearFilters()">Limpar</button>
+        </div>
+    </div>
+
+    <div class="table-container">
+        @if (footwearList.Any())
+        {
+            <table>
+                <thead>
+                    <tr>
+                        <th onclick="sortTable(0)">Nome <span class="sort-icon">↕</span></th>
+                        <th>Imagem</th>
+                        <th onclick="sortTable(2)">SKU <span class="sort-icon">↕</span></th>
+                        <th onclick="sortTable(3)">Marca <span class="sort-icon">↕</span></th>
+                        <th onclick="sortTable(4)">Modalidade <span class="sort-icon">↕</span></th>
+                        <th onclick="sortTable(5)">Tipo <span class="sort-icon">↕</span></th>
+                        <th onclick="sortTable(6)">Tamanho <span class="sort-icon">↕</span></th>
+                        <th onclick="sortTable(7)">Quantidade <span class="sort-icon">↕</span></th>
+                        <th onclick="sortTable(8)">Preço <span class="sort-icon">↕</span></th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="footwearTableBody">
+                    @foreach (var item in footwearList)
+                    {
+                        <tr data-id="@item.Footwear.Id" 
+                            data-brand="@item.Footwear.Brand" 
+                            data-modality="@item.Footwear.Modalities" 
+                            data-type="@item.Footwear.TypeOfFootwear">
+                            <td>@item.Footwear.Name</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.Footwear.Image))
+                                {
+                                    <img src="@item.Footwear.Image" alt="@item.Footwear.Name" class="product-image" />
+                                }
+                                else
+                                {
+                                    <div class="product-image-placeholder">
+                                        @item.Footwear.Name.Substring(0, 1).ToUpper()
+                                    </div>
+                                }
+                            </td>
+                            <td>@(item.Footwear.SKU ?? "N/A")</td>
+                            <td>@item.Footwear.Brand</td>
+                            <td>@item.Footwear.Modalities</td>
+                            <td>@item.Footwear.TypeOfFootwear</td>
+                            <td>@item.Footwear.Size</td>
+                            <td>
+                                <div class="quantity-controls">
+                                    <button type="button" class="quantity-btn" 
+                                            onclick="updateQuantity(@item.Footwear.Id, 'decrease')" 
+                                            @(item.Quantity <= 0 ? "disabled" : "")>-</button>
+                                    <span class="quantity-display" id="qty-@item.Footwear.Id">@item.Quantity</span>
+                                    <button type="button" class="quantity-btn" 
+                                            onclick="updateQuantity(@item.Footwear.Id, 'increase')">+</button>
+                                </div>
+                            </td>
+                            <td class="price">@item.Footwear.Price.ToString("C")</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="@Url.Action("Details", "Footwear", new { id = item.Footwear.Id })" 
+                                       class="action-btn btn-view" title="Visualizar">👁</a>
+                                    <a href="@Url.Action("Edit", "Footwear", new { id = item.Footwear.Id })" 
+                                       class="action-btn btn-edit" title="Editar">✏</a>
+                                    <button type="button" class="action-btn btn-delete" 
+                                            onclick="confirmDelete(@item.Footwear.Id, '@item.Footwear.Name')" 
+                                            title="Excluir">🗑</button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="no-results">
+                <h3>Nenhum calçado encontrado</h3>
+                <p>Não há calçados cadastrados no sistema.</p>
+                <a href="@Url.Action("Create", "Footwear")" class="btn btn-primary">Adicionar Primeiro Calçado</a>
+            </div>
+        }
+
+        @if (footwearList.Any())
+        {
+            <div class="pagination">
+                <div class="pagination-info">
+                    <span>Total de <strong id="totalItemsDisplay">@totalItems</strong> itens encontrados</span>
+                </div>
+                <div class="results-info">
+                    @DateTime.Now.ToString("dd/MM/yyyy HH:mm")
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    let allFootwear = @Html.Raw(Json.Serialize(footwearList));
+    let filteredFootwear = [...allFootwear];
+    let sortDirection = {};
+
+    document.getElementById('searchInput').addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        filterAndDisplayItems(searchTerm);
+    });
+
+    function filterAndDisplayItems(searchTerm = '') {
+        filteredFootwear = allFootwear.filter(item => {
+            const matchesSearch = searchTerm === '' || 
+                item.footwear.name.toLowerCase().includes(searchTerm) ||
+                (item.footwear.sku && item.footwear.sku.toLowerCase().includes(searchTerm)) ||
+                item.footwear.brand.toString().toLowerCase().includes(searchTerm);
+
+            const brandFilter = document.getElementById('brandFilter').value;
+            const modalityFilter = document.getElementById('modalityFilter').value;
+            const typeFilter = document.getElementById('typeFilter').value;
+
+            const matchesBrand = brandFilter === '' || item.footwear.brand.toString() === brandFilter;
+            const matchesModality = modalityFilter === '' || item.footwear.modalities.toString() === modalityFilter;
+            const matchesType = typeFilter === '' || item.footwear.typeOfFootwear.toString() === typeFilter;
+
+            return matchesSearch && matchesBrand && matchesModality && matchesType;
+        });
+
+        displayItems();
+    }
+
+    function displayItems() {
+        const tbody = document.getElementById('footwearTableBody');
+        
+        if (filteredFootwear.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="10" class="no-results"><h3>Nenhum item encontrado</h3><p>Tente ajustar os filtros ou termos de busca.</p></td></tr>';
+        } else {
+            tbody.innerHTML = filteredFootwear.map(item => `
+                <tr data-id="${item.footwear.id}" 
+                    data-brand="${item.footwear.brand}" 
+                    data-modality="${item.footwear.modalities}" 
+                    data-type="${item.footwear.typeOfFootwear}">
+                    <td>${item.footwear.name}</td>
+                    <td>
+                        ${item.footwear.image ? 
+                            `<img src="${item.footwear.image}" alt="${item.footwear.name}" class="product-image" />` :
+                            `<div class="product-image-placeholder">${item.footwear.name.charAt(0).toUpperCase()}</div>`
+                        }
+                    </td>
+                    <td>${item.footwear.sku || 'N/A'}</td>
+                    <td>${item.footwear.brand}</td>
+                    <td>${item.footwear.modalities}</td>
+                    <td>${item.footwear.typeOfFootwear}</td>
+                    <td>${item.footwear.size}</td>
+                    <td>
+                        <div class="quantity-controls">
+                            <button type="button" class="quantity-btn" 
+                                    onclick="updateQuantity(${item.footwear.id}, 'decrease')" 
+                                    ${item.quantity <= 0 ? 'disabled' : ''}>-</button>
+                            <span class="quantity-display" id="qty-${item.footwear.id}">${item.quantity}</span>
+                            <button type="button" class="quantity-btn" 
+                                    onclick="updateQuantity(${item.footwear.id}, 'increase')">+</button>
+                        </div>
+                    </td>
+                    <td class="price">R$ ${item.footwear.price.toFixed(2)}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <a href="/Footwear/Details/${item.footwear.id}" class="action-btn btn-view" title="Visualizar">👁</a>
+                            <a href="/Footwear/Edit/${item.footwear.id}" class="action-btn btn-edit" title="Editar">✏</a>
+                            <button type="button" class="action-btn btn-delete" 
+                                    onclick="confirmDelete(${item.footwear.id}, '${item.footwear.name}')" 
+                                    title="Excluir">🗑</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        document.getElementById('totalItemsDisplay').textContent = filteredFootwear.length;
+    }
+
+    function updateQuantity(footwearId, action) { // Mockado
+        const qtyElement = document.getElementById(`qty-${footwearId}`);
+        let currentQty = parseInt(qtyElement.textContent);
+        
+        if (action === 'increase') {
+            currentQty++;
+        } else if (action === 'decrease' && currentQty > 0) {
+            currentQty--;
+        }
+        
+        const item = allFootwear.find(f => f.footwear.id === footwearId);
+        if (item) {
+            item.quantity = currentQty;
+        }
+        
+        qtyElement.textContent = currentQty;
+        
+        const minusBtn = qtyElement.previousElementSibling;
+        minusBtn.disabled = currentQty <= 0;
+        
+        console.log(`Updated quantity for footwear ${footwearId} to ${currentQty}`);
+    }
+
+    function sortTable(columnIndex) {
+        const column = getColumnName(columnIndex);
+        const currentDirection = sortDirection[column] || 'asc';
+        const newDirection = currentDirection === 'asc' ? 'desc' : 'asc';
+        sortDirection[column] = newDirection;
+
+        filteredFootwear.sort((a, b) => {
+            let aValue, bValue;
+            
+            switch(columnIndex) {
+                case 0: aValue = a.footwear.name; bValue = b.footwear.name; break;
+                case 2: aValue = a.footwear.sku || ''; bValue = b.footwear.sku || ''; break;
+                case 3: aValue = a.footwear.brand.toString(); bValue = b.footwear.brand.toString(); break;
+                case 4: aValue = a.footwear.modalities.toString(); bValue = b.footwear.modalities.toString(); break;
+                case 5: aValue = a.footwear.typeOfFootwear.toString(); bValue = b.footwear.typeOfFootwear.toString(); break;
+                case 6: aValue = a.footwear.size; bValue = b.footwear.size; break;
+                case 7: aValue = a.quantity; bValue = b.quantity; break;
+                case 8: aValue = a.footwear.price; bValue = b.footwear.price; break;
+                default: return 0;
+            }
+
+            if (typeof aValue === 'string') {
+                return newDirection === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+            } else {
+                return newDirection === 'asc' ? aValue - bValue : bValue - aValue;
+            }
+        });
+
+        updateSortIcons(columnIndex, newDirection);
+        displayItems();
+    }
+
+    function getColumnName(index) {
+        const columns = ['name', 'image', 'sku', 'brand', 'modality', 'type', 'size', 'quantity', 'price'];
+        return columns[index] || 'name';
+    }
+
+    function updateSortIcons(activeColumn, direction) {
+        document.querySelectorAll('.sort-icon').forEach((icon, index) => {
+            if (index === activeColumn) {
+                icon.textContent = direction === 'asc' ? '↑' : '↓';
+            } else {
+                icon.textContent = '↕';
+            }
+        });
+    }
+
+    function toggleFilters() {
+        const panel = document.getElementById('filtersPanel');
+        panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function applyFilters() {
+        filterAndDisplayItems(document.getElementById('searchInput').value);
+    }
+
+    function clearFilters() {
+        document.getElementById('brandFilter').value = '';
+        document.getElementById('modalityFilter').value = '';
+        document.getElementById('typeFilter').value = '';
+        document.getElementById('searchInput').value = '';
+        filterAndDisplayItems();
+    }
+
+    // MOCKADO
+    function confirmDelete(footwearId, footwearName) {
+        if (confirm(`Tem certeza que deseja excluir "${footwearName}"?`)) {
+            console.log(`Delete footwear ${footwearId}`);
+            alert('Funcionalidade de exclusão será implementada');
+        }
+    }
+</script>
