@@ -1,7 +1,7 @@
 ﻿#sidebar {
     font-size: 1em;
     box-sizing: border-box;
-    height: calc(100vh - 40px); /* Ajuste para considerar a margem */
+    height: calc(100vh - 40px); 
     width: 300px;
     padding: 10px 1em;
     background-color: #c8deef;
@@ -13,7 +13,7 @@
 
 #sidebar ul {
     list-style: none;
-    padding: 0; /* É uma boa prática zerar o padding da lista */
+    padding: 0; 
 }
 
 #sidebar ul li.active a {
@@ -39,15 +39,20 @@
 }
 
 #sidebar a:hover,
-#sidebar .dropdown-btn:hover,
-.nav-text:hover{
+#sidebar .dropdown-btn:hover{
     background-color: #bed8ed;
     color: #006ec4;
+}
+
+#sidebar a:hover svg,
+#sidebar .dropdown-btn:hover svg {
+    fill: #006ec4;
 }
 
 #sidebar svg {
     flex-shrink: 0;
     fill: #334;
+    transition: fill 0.2s ease-in-out;
 }
 
 #sidebar .logo-container {
@@ -58,12 +63,6 @@
     justify-content: flex-start;
 }
 
-.logo-img {
-    max-width: 70px;
-    height: auto;
-    object-fit: contain;
-    display: block;
-}
 
 #sidebar .logo-text {
     font-weight: 600;
@@ -86,7 +85,6 @@
     display: none;
     padding-left: 1.5em;
     transition: all 0.3s ease;
-    align-items:center;
 }
 
 .sub-menu li {
@@ -116,8 +114,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-left: 0em;
-    padding-right: 20em;
     cursor: pointer;
 }
 
@@ -135,7 +131,7 @@ body {
     background-color: #f4f7fa; 
 }
 
-/* IMPORTANTE: Esta classe envolve o Header e o @RenderBody() */
+/*  Esta classe envolve o Header e o @RenderBody() */
 .main-content {
     /* cria o espaço para a sidebar fixa */
     margin-left: 340px; /* 300px da sidebar + 20px de margem de cada lado */
@@ -155,7 +151,6 @@ body {
     margin-bottom: 25px;
 }
 
-/* Estilos da Saudação */
 .header-greeting h3 {
     margin: 0;
     font-size: 1.4rem;
