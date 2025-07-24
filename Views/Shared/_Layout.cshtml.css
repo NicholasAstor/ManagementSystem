@@ -16,13 +16,15 @@
     padding: 0; 
 }
 
-#sidebar ul li.active a {
+#sidebar ul li.active > a,
+#sidebar ul li.active > .dropdown-header > a {
   font-weight: 600;
   color: #006ec4;
   background-color: #bed8ed; 
 }
 
-#sidebar ul li.active a svg {
+#sidebar ul li.active > a > svg,
+#sidebar ul li.active > .dropdown-header > a > svg {
     fill: #006ec4;
 }
 
