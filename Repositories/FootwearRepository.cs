@@ -16,13 +16,20 @@ namespace ManagementSystem.Repositories
             {
                 new Footwear("SKU001", Brand.Nike, Modalities.Futebol, "Nike Mercurial", "", "High performance soccer footwear", 120.00, DateTime.Now, 42, TypeOfFootwear.Futsal),
                 new Footwear("SKU002", Brand.Adidas, Modalities.Futebol, "Adidas Predator", "", "Precision and control on the field", 130.00, DateTime.Now, 41, TypeOfFootwear.Trava),
-                new Footwear("SKU003", Brand.Puma, Modalities.Futebol, "Puma Future", "", "Innovative design for agility", 125.00, DateTime.Now, 43, TypeOfFootwear.Society)
+                new Footwear("SKU003", Brand.Puma, Modalities.Futebol, "Puma Future", "", "Innovative design for agility", 125.00, DateTime.Now, 43, TypeOfFootwear.Society),
+                new Footwear("SKU007", Brand.Asics, Modalities.Basquete, "Asics Gel", "", "Absorção de impacto", 170.00, DateTime.Now, 41, TypeOfFootwear.Casual),
+                new Footwear("SKU008", Brand.Umbro, Modalities.Futebol, "Umbro Speciali", "", "Tradicional e resistente", 110.00, DateTime.Now, 42, TypeOfFootwear.Futsal),
+                new Footwear("SKU009", Brand.NewBalance, Modalities.Corrida, "New Balance Fresh Foam", "", "Conforto e leveza", 180.00, DateTime.Now, 43, TypeOfFootwear.Casual),
+
             };
             _footwearsDict = new Dictionary<string, int>()
             {
                 { "SKU001", 1 },
                 { "SKU002", 2 },
-                { "SKU003", 3 }
+                { "SKU003", 3 },
+                { "SKU007", 2 },
+                { "SKU008", 3 },
+                { "SKU009", 1 },
             };
         }
 
