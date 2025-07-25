@@ -75,7 +75,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="M160-200v-80h80v-280q0-83 50-147.5T420-792v-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v28q80 20 130 84.5T720-560v280h80v80H160Zm320-300Zm0 420q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80ZM320-280h320v-280q0-66-47-113t-113-47q-66 0-113 47t-47 113v280Z"/></svg>
                 </div>
                 <div class="user-profile">
-                    <img src="~/images/bh.jpg" style="max-width: 80%; height: 50px; border-radius: 80%;" alt="Avatar do Admin">
+                    <img id="user-avatar-trigger" src="~/images/bh.jpg" style="max-width: 80%; height: 50px; border-radius: 80%;" alt="Avatar do Admin" class="avatar" onclick="openImage(this.src)">
                     <div class="user-info">
                         <span class="user-name">Admin</span>
                         <span class="user-role">Store Manager</span>
@@ -83,11 +83,25 @@
                 </div>
             </div>
         </header>
-
         <div class="container">
             <main role="main" class="pb-3">
                 @RenderBody()
             </main>
+        </div>
+    </div>
+
+    @*Modal de Foto do Usuário*@
+    <div class="modal fade" id="image-viewer-modal" tabindex="-1" aria-labelledby="imageViewerModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="imageViewerModalLabel">Avatar do Usuário</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="modal-image-content" src="" alt="Imagem Ampliada" class="img-fluid">
+                </div>
+            </div>
         </div>
     </div>
     
