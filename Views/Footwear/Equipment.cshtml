@@ -1,1 +1,19 @@
-<h1>hello world de equipamentos</h1>
+@model IEnumerable<ManagementSystem.Models.DTOs.FootwearGetAllDTO>
+
+@{
+    ViewData["Title"] = "Página de Equipamentos";
+    var equipmentList = Model?.ToList() ?? new List<ManagementSystem.Models.DTOs.FootwearGetAllDTO>();
+}
+
+<link rel="stylesheet" href="~/css/Equipment.css" asp-append-version="true" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h2>🏋️ Página de Equipamentos</h2>
+            <p class="text-muted">Visualize, edite ou adicione equipamentos ao estoque da loja.</p>
+        </div>
+        <a href="@Url.Action("Create", "Equipment")" class="btn btn-primary">➕ Adicionar Equipamento</a>
+    </div>
+</div>
