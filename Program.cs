@@ -1,7 +1,16 @@
+using ManagementSystem.Models;
+using ManagementSystem.Models.DTOs;
+using ManagementSystem.Repositories;
+using ManagementSystem.Repositories.Interfaces;
+using ManagementSystem.Services;
+using ManagementSystem.Services.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton<IRepository<Footwear, FootwearGetAllDTO>, FootwearRepository>();
+builder.Services.AddSingleton<IService<Footwear, FootwearGetAllDTO>, FootwearService>();
 
 var app = builder.Build();
 
@@ -22,6 +31,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Login}/{action=Index}/{id?}");
 
 app.Run();

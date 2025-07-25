@@ -1,0 +1,147 @@
+@{
+    ViewData["Title"] = "Adicionar novo item";
+}
+
+<h2 class="mb-4 fw-bold text-primary">Cadastro de Item</h2>
+
+<div class="card shadow p-4 mb-5">
+    <form asp-asp-controller="Footwear" asp-action="Create" method="post">
+        <input type="hidden" name="returnUrl" value="@Context.Request.Headers["Referer"]" />
+        <h5 class="text-secondary mb-3">
+            <img src="~/images/informaçao.png" width="25" class="me-2" />
+            Informações Gerais
+        </h5>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Tipo do Item</label>
+                <select name="itemType" class="form-control" onchange="toggleFields(this.value)">
+                    <option value="Footwear">Calçado</option>
+                    <option value="Equipment">Equipamento</option>
+                </select>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">SKU</label>
+                <input type="text" name="SKU" class="form-control" required />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Nome</label>
+                <input type="text" name="Name" class="form-control" required />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Marca</label>
+                <select name="Brand" class="form-control">
+                    <option value="Nike">Nike</option>
+                    <option value="Adidas">Adidas</option>
+                    <option value="Puma">Puma</option>
+                    <option value="Reebok">Reebok</option>
+                    <option value="Asics">Asics</option>
+                    <option value="UnderArmour">UnderArmour</option>
+                    <option value="NewBalance">NewBalance</option>
+                    <option value="Fila">Fila</option>
+                    <option value="ProAction">ProAction</option>
+                    <option value="Movement">Movement</option>
+                    <option value="LifeFitness">LifeFitness</option>
+                </select>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Modalidade</label>
+                <select name="Modalities" class="form-control">
+                    <option value="Futebol">Futebol</option>
+                    <option value="Futsal">Futsal</option>
+                    <option value="Fut7">Fut7</option>
+                    <option value="Corrida">Corrida</option>
+                    <option value="Musculação">Musculação</option>
+                    <option value="Basquete">Basquete</option>
+                    <option value="Tênis">Tênis</option>
+                    <option value="Vôlei">Vôlei</option>
+                </select>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Preço</label>
+                <input type="number" name="Price" step="0.01" class="form-control" />
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <label class="form-label">Descrição</label>
+                <textarea name="Description" class="form-control" rows="3"></textarea>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Data de Fabricação</label>
+                <input type="date" name="ManufacturedIn" class="form-control" />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Imagem (URL)</label>
+                <input type="text" name="Image" class="form-control" />
+            </div>
+        </div>
+
+        <!-- Seção específica para calçados -->
+        <div id="footwear-fields">
+            <h5 class="text-secondary mt-4 mb-3">
+                <img src="~/images/tenis.png" width="30" class="me-2" />
+                Informações Específicas do Calçado
+            </h5>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Tamanho</label>
+                    <input type="number" name="Size" class="form-control" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Tipo de Calçado</label>
+                    <select name="TypeOfFootwear" class="form-control">
+                        <option value="Corrida">Corrida</option>
+                        <option value="Social">Social</option>
+                        <option value="Casual">Casual</option>
+                        <option value="Futsal">Futsal</option>
+                        <option value="Society">Society</option>
+                        <option value="Trava">Trava</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seção específica para equipamentos -->
+        <div id="equipment-fields" style="display: none;">
+            <h5 class="text-secondary mt-4 mb-3">
+                <img src="~/images/halter.png" width="25" class="me-2" />
+                Informações Específicas do Equipamento
+            </h5>
+
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <label class="form-label">Especificações</label>
+                    <textarea name="specifications" class="form-control" rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-4">
+            <i class="bi bi-plus-circle"></i> Cadastrar
+        </button>
+    </form>
+</div>
+
+<script>
+    function toggleFields(type) {
+        const footwearFields = document.getElementById("footwear-fields");
+        const equipmentFields = document.getElementById("equipment-fields");
+
+        if (type === "Footwear") {
+            footwearFields.style.display = "block";
+            equipmentFields.style.display = "none";
+        } else if (type === "Equipment") {
+            footwearFields.style.display = "none";
+            equipmentFields.style.display = "block";
+        }
+    }
+
+    toggleFields("Footwear");
+
+</script>

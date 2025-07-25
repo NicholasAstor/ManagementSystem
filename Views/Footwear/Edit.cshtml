@@ -1,0 +1,215 @@
+@using ManagementSystem.Models.Enum
+@model ManagementSystem.Models.ViewModel.FootwearEditViewModel
+@{
+    ViewData["Title"] = "Editar item";
+}
+
+<h2 class="mb-4 fw-bold text-primary">Editar Item</h2>
+
+<div class="card shadow p-4 mb-5">
+    <form asp-controller="Footwear" asp-action="Edit" method="post">
+        <input type="hidden" name="id" value="@Model.Id" />
+        <input type="hidden" name="returnUrl" value="@Context.Request.Headers["Referer"]" />
+        <h5 class="text-secondary mb-3">
+            <img src="~/images/informaçao.png" width="25" class="me-2" />
+            Informações Gerais
+        </h5>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Tipo do Item</label>
+                <select name="itemType" class="form-control" onchange="toggleFields(this.value)">
+                        <option value="Footwear" selected>Calçado</option>
+                        <option value="Equipment">Equipamento</option>
+                </select>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">SKU</label>
+                <input type="text" value="@Model.SKU"name="SKU" class="form-control" required />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Nome</label>
+                <input type="text" value="@Model.Name"name="Name" class="form-control" required />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Marca</label>
+                <select name="Brand" class="form-control">
+                    @switch(Model.Brand){
+                        case ManagementSystem.Models.Brand.Nike:
+                            <option value="Nike" selected>Nike</option>
+                            break;
+                        case ManagementSystem.Models.Brand.Adidas:
+                            <option value="Adidas" selected>Adidas</option>
+                            break;
+                        case ManagementSystem.Models.Brand.Puma:
+                            <option value="Puma" selected>Puma</option>
+                            break;
+                        case ManagementSystem.Models.Brand.Reebok:
+                            <option value="Reebok" selected>Reebok</option>
+                            break;
+                        case ManagementSystem.Models.Brand.Asics:
+                            <option value="Asics" selected>Asics</option>
+                            break;
+                        case ManagementSystem.Models.Brand.UnderArmour:
+                            <option value="UnderArmour" selected>UnderArmour</option>
+                            break;
+                        case ManagementSystem.Models.Brand.NewBalance:
+                            <option value="NewBalance" selected>NewBalance</option>
+                            break;
+                        case ManagementSystem.Models.Brand.Fila:
+                            <option value="Fila" selected>Fila</option>
+                            break;
+                        case ManagementSystem.Models.Brand.ProAction:
+                            <option value="ProAction" selected>ProAction</option>
+                            break; 
+                        case ManagementSystem.Models.Brand.Movement:
+                            <option value="Movement" selected>Movement</option>
+                            break;
+                        case ManagementSystem.Models.Brand.LifeFitness:
+                            <option value="LifeFitness" selected>LifeFitness</option>
+                            break;
+                    }
+                    <option value="Nike">Nike</option>
+                    <option value="Adidas">Adidas</option>
+                    <option value="Puma">Puma</option>
+                    <option value="Reebok">Reebok</option>
+                    <option value="Asics">Asics</option>
+                    <option value="UnderArmour">UnderArmour</option>
+                    <option value="NewBalance">NewBalance</option>
+                    <option value="Fila">Fila</option>
+                    <option value="ProAction">ProAction</option>
+                    <option value="Movement">Movement</option>
+                    <option value="LifeFitness">LifeFitness</option>
+                </select>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Modalidade</label>
+                <select name="Modalities" class="form-control">
+                    @switch(Model.Modalities)
+                    {
+                        case ManagementSystem.Models.Modalities.Futebol:
+                            <option value="Futebol" selected>Futebol</option>
+                            break;
+                        case ManagementSystem.Models.Modalities.Futsal:
+                            <option value="Futsal" selected>Futsal</option>
+                            break;
+                        case ManagementSystem.Models.Modalities.Fut7:
+                            <option value="Fut7" selected>Fut7</option>
+                            break;
+                        case ManagementSystem.Models.Modalities.Corrida:
+                            <option value="Corrida" selected>Corrida</option>
+                            break;
+                        case ManagementSystem.Models.Modalities.Musculação:
+                            <option value="Musculação" selected>Musculação</option>
+                            break;
+                        case ManagementSystem.Models.Modalities.Basquete:
+                            <option value="Basquete" selected>Basquete</option>
+                            break;
+                        case ManagementSystem.Models.Modalities.Tênis:
+                            <option value="Tênis" selected>Tênis</option>
+                            break;
+                        case ManagementSystem.Models.Modalities.Vôlei:
+                            <option value="Vôlei" selected>Vôlei</option>
+                            break;
+                    }
+                    <option value="Futebol">Futebol</option>
+                    <option value="Futsal">Futsal</option>
+                    <option value="Fut7">Fut7</option>
+                    <option value="Corrida">Corrida</option>
+                    <option value="Musculação">Musculação</option>
+                    <option value="Basquete">Basquete</option>
+                    <option value="Tênis">Tênis</option>
+                    <option value="Vôlei">Vôlei</option>
+                </select>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Preço</label>
+                <input type="number" value="@Model.Price" name="Price" step="0.01" class="form-control" />
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <label class="form-label">Descrição</label>
+                <textarea name="Description" class="form-control" rows="3">@Model.Description</textarea>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Data de Fabricação</label>
+                <input type="date" value="@Model.ManufacturedIn" name="ManufacturedIn" class="form-control" />
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Imagem (URL)</label>
+                <input type="text" value="@Model.Image" name="Image" class="form-control" />
+            </div>
+        </div>
+
+        <!-- Seção específica para calçados -->
+        <div id="footwear-fields">
+            <h5 class="text-secondary mt-4 mb-3">
+                <img src="~/images/tenis.png" width="30" class="me-2" />
+                Informações Específicas do Calçado
+            </h5>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Tamanho</label>
+                    <input type="number" value="@Model.Size" name="Size" class="form-control" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Tipo de Calçado</label>
+                    <select name="TypeOfFootwear" class="form-control">
+                        @switch(Model.TypeOfFootwear)
+                        {
+                            case ManagementSystem.Models.Enum.TypeOfFootwear.Corrida:
+                                <option value="Corrida" selected>Corrida</option>
+                                break;
+                            case ManagementSystem.Models.Enum.TypeOfFootwear.Social:
+                                <option value="Social" selected>Social</option>
+                                break;
+                            case ManagementSystem.Models.Enum.TypeOfFootwear.Casual:
+                                <option value="Casual" selected>Casual</option>
+                                break;
+                            case ManagementSystem.Models.Enum.TypeOfFootwear.Futsal:
+                                <option value="Futsal" selected>Futsal</option>
+                                break;
+                            case ManagementSystem.Models.Enum.TypeOfFootwear.Society:
+                                <option value="Society" selected>Society</option>
+                                break;
+                            case ManagementSystem.Models.Enum.TypeOfFootwear.Trava:
+                                <option value="Trava" selected>Trava</option>
+                                break;
+                        }
+                        <option value="Corrida">Corrida</option>
+                        <option value="Social">Social</option>
+                        <option value="Casual">Casual</option>
+                        <option value="Futsal">Futsal</option>
+                        <option value="Society">Society</option>
+                        <option value="Trava">Trava</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seção específica para equipamentos -->
+        <div id="equipment-fields" style="display: none;">
+            <h5 class="text-secondary mt-4 mb-3">
+                <img src="~/images/halter.png" width="25" class="me-2" />
+                Informações Específicas do Equipamento
+            </h5>
+
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <label class="form-label">Especificações</label>
+                    <textarea name="specifications" class="form-control" rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-4">
+            <i class="bi bi-plus-circle"></i> Completar Edição
+        </button>
+    </form>
+</div>
