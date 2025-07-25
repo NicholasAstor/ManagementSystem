@@ -157,19 +157,16 @@ namespace ManagementSystem.Controllers
 
                 if (footwear == null)
                 {
-                    TempData["ErrorMessage"] = "Calçado não encontrado.";
-                    return RedirectToAction(nameof(Index));
+                    return NotFound();
                 }
 
                 _footwearService.OutOfProducts(id);
-                TempData["SuccessMessage"] = "Calçado excluído com sucesso!";
+                return Ok();
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = $"Erro ao excluir calçado: {ex.Message}";
+                return StatusCode(500, "Erro ao excluir calçado.");
             }
-
-            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
