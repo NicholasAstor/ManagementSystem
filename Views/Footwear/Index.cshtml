@@ -58,6 +58,7 @@
     </div>
 
     <div class="table-container">
+        @Html.AntiForgeryToken()
         @if (footwearList.Any())
         {
             <table>
@@ -117,8 +118,9 @@
                                        class="action-btn btn-view" title="Visualizar">👁</a>
                                     <a href="@Url.Action("Edit", "Footwear", new { id = item.Footwear.Id })" 
                                        class="action-btn btn-edit" title="Editar">✏</a>
-                                    <button type="button" class="action-btn btn-delete" 
-                                            onclick="confirmDelete(@item.Footwear.Id, '@item.Footwear.Name')" 
+                                    <button type="button" class="action-btn btn-delete" data-id="@item.Footwear.Id" 
+                                            data-name="@item.Footwear.Name"
+                                            onclick="confirmDelete(this)" 
                                             title="Excluir">🗑</button>
                                 </div>
                             </td>
@@ -318,11 +320,31 @@
         filterAndDisplayItems();
     }
 
-    // MOCKADO
-    function confirmDelete(footwearId, footwearName) {
-        if (confirm(`Tem certeza que deseja excluir "${footwearName}"?`)) {
-            console.log(`Delete footwear ${footwearId}`);
-            alert('Funcionalidade de exclusão será implementada');
+    function confirmDelete(button) {
+        const id = button.getAttribute("data-id");
+        const name = button.getAttribute("data-name");
+
+        if (confirm(`Tem certeza que deseja excluir "${name}"?`)) {
+            fetch(`/Footwear/Delete/${id}`, {
+                method: "POST",
+                headers: {
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                }
+            })
+            .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                } else if (response.ok) {
+                    location.reload();
+                } else {
+                    alert("Erro ao excluir o item.");
+                }
+            })
+            .catch(err => {
+                console.error("Erro:", err);
+                alert("Erro ao excluir o item.");
+            });
         }
     }
+
 </script>

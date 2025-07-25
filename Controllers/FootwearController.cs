@@ -40,12 +40,13 @@ namespace ManagementSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(FootwearCreateViewModel model)
+        public IActionResult Create(FootwearCreateViewModel model, string? returnUrl)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
+                    model.Image = "";
                     var footwear = new Footwear(
                         model.SKU,
                         model.Brand,
@@ -62,6 +63,12 @@ namespace ManagementSystem.Controllers
                     _footwearService.EntryOfProducts(footwear);
 
                     TempData["SuccessMessage"] = "Calçado adicionado com sucesso!";
+
+                    if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                    {
+                        return Redirect(returnUrl);
+                    }
+
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
@@ -150,19 +157,16 @@ namespace ManagementSystem.Controllers
 
                 if (footwear == null)
                 {
-                    TempData["ErrorMessage"] = "Calçado não encontrado.";
-                    return RedirectToAction(nameof(Index));
+                    return NotFound();
                 }
 
                 _footwearService.OutOfProducts(id);
-                TempData["SuccessMessage"] = "Calçado excluído com sucesso!";
+                return Ok();
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = $"Erro ao excluir calçado: {ex.Message}";
+                return StatusCode(500, "Erro ao excluir calçado.");
             }
-
-            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
