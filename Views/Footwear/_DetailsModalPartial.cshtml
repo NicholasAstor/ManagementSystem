@@ -1,0 +1,26 @@
+@model ManagementSystem.Models.Footwear;
+@{
+    ViewData["Title"] = "Footwear Details";
+}
+
+<div class = "modal-body">
+    <div class = "row">
+        <div class = "col-md-5">
+            <img src = "@Model.Image" alt = "@Model.Name" class = "img-fluid" />
+        </div>
+        <div class = "col-md-7">
+            <h4>@Model.Name</h4>
+            <p class="col-sm-4"> SKU: @Model.SKU</p>
+            <p class="text-muted">@Model.Brand - @Model.TypeOfFootwear</p>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-4"> Preço: </dt>
+                <dd class="col-sm-8">R$ @Model.Price</dd>
+                <dt class="col-sm-4"> Tamanho: </dt>
+                <dd class="col-sm-8">@Model.Size</dd>
+                <dt class="col-sm-4"> Descrição: </dt>
+                <dd class="col-sm-8">@Model.Description</dd>
+            </dl>
+        </div>
+    </div>
+</div>

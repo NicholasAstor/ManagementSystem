@@ -115,7 +115,11 @@
                             <td>
                                 <div class="action-buttons">
                                     <a href="@Url.Action("Details", "Footwear", new { id = item.Footwear.Id })" 
-                                       class="action-btn btn-view" title="Visualizar">👁</a>
+                                       class="action-btn btn-view view-details-btn" 
+                                              data-id="@item.Footwear.Id"  
+                                              title="Visualizar"
+                                              >👁</a>
+
                                     <a href="@Url.Action("Edit", "Footwear", new { id = item.Footwear.Id })" 
                                        class="action-btn btn-edit" title="Editar">✏</a>
                                     <button type="button" class="action-btn btn-delete" data-id="@item.Footwear.Id" 
@@ -149,6 +153,20 @@
                 </div>
             </div>
         }
+    </div>
+
+    @*Modal de visualização de item*@
+    <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailsModalLabel">Detalhes do Item</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                </div>
+        </div>
     </div>
 </div>
 
@@ -346,5 +364,48 @@
             });
         }
     }
+
+    document.addEventListener("DOMContentLoaded", function() {
+
+        const detailsModalElement = document.getElementById('detailsModal');    // elemento do modal
+        
+        // Verifica se o elemento do modal realmente existe na página
+        if (detailsModalElement) {
+            const modalBody = detailsModalElement.querySelector('.modal-body');     //corpo do modal
+            const detailsModal = new bootstrap.Modal(detailsModalElement);          // instancia o modal
+
+            const detailButtons = document.querySelectorAll('.view-details-btn');   // seleciona todos os botões de detalhes
+
+            detailButtons.forEach(button => {           
+                button.addEventListener('click', function (event) {     
+                    
+                    event.preventDefault();     // evita navegação
+
+                    const itemId = this.dataset.id;
+                    const url = `/Footwear/Details/${itemId}`;
+
+                    detailsModal.show(); // mostra o modal
+                    
+                    // busca o conteúdo
+                    fetch(url)
+                        .then(response => {
+                            if (!response.ok) throw new Error('Falha na resposta da rede.');
+                            return response.text();
+                        })
+                        .then(html => {
+                            modalBody.innerHTML = html;     // insere o conteúdo no modal
+                        })
+                        .catch(error => {
+                            console.error('Erro ao buscar detalhes:', error);
+                            modalBody.innerHTML = '<p class="text-danger">Ocorreu um erro ao carregar os detalhes.</p>';
+                        });
+                });
+            });
+
+            detailsModalElement.addEventListener('hidden.bs.modal', function () {
+                modalBody.innerHTML = '';
+            });
+        }
+    });
 
 </script>

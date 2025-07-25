@@ -30,7 +30,7 @@ namespace ManagementSystem.Controllers
                 return NotFound();
             }
 
-            return View(footwear);
+            return PartialView("_DetailsModalPartial", footwear);
         }
 
         public IActionResult Create()
@@ -181,7 +181,6 @@ namespace ManagementSystem.Controllers
                 return Json(new { success = false, message = ex.Message });
             }
         }
-
 
         //MÉTODOS TEMPORÁRIOS PARA TESTE DE FRONTEND:
 
