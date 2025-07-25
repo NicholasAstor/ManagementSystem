@@ -46,7 +46,7 @@ namespace ManagementSystem.Controllers
             {
                 try
                 {
-                    model.Image = "";
+                    //model.Image = "";
                     var footwear = new Footwear(
                         model.SKU,
                         model.Brand,
