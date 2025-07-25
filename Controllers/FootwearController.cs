@@ -204,5 +204,14 @@ namespace ManagementSystem.Controllers
             }
         }
 
+        public IActionResult Equipment()
+        {
+            return View();
+        }
+        public IActionResult Footwear()
+        {
+            return View();
+        }
+
     }
 }
