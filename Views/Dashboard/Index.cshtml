@@ -1,0 +1,92 @@
+﻿@model ManagementSystem.Models.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<link rel="stylesheet" href="~/css/Dashboard.css" asp-append-version="true" />
+
+<body>
+    <div class="containerGeral">
+        <div class="dashboard-container">
+            <div class="container-texts">
+                <div class="texts">
+                    <h4 class="lstItens">Lista de Itens</h4>
+                    <a class="verTudo" href="#">Ver tudo</a>
+                </div>
+                <div class="linha"></div>
+                <div class="containerTabela">
+                    <table class="tabela">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Imagem</th>
+                                <th>Modelo</th>
+                                <th>Preço</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.RecentFootwear)
+                            {
+                                <tr>
+                                    <td>@item.Footwear.Name</td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(item.Footwear.Image))
+                                        {
+                                            <img src="@item.Footwear.Image" alt="@item.Footwear.Name" style="width:80px; height:60px; object-fit:contain; border-radius:10px; background:#f5f5f5;" />
+                                        }
+                                        else
+                                        {
+                                            <div style="width:80px; height:60px; background:#e9ecef; border-radius:10px; display:flex; align-items:center; justify-content:center;">
+                                                <span>@item.Footwear.Name.Substring(0,1).ToUpper()</span>
+                                            </div>
+                                        }
+                                    </td>
+                                    <td>@item.Footwear.Name</td>
+                                    <td>@item.Footwear.Price.ToString("N2")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="caixasDeResumo">
+
+            <div class="caixa">
+                <p class = "tituloResumo">Resumo dos itens</p>
+                <div class="ResumoItens">
+                    <div class="EmMaos">
+                        <img src="~/images/Quantity.png" alt="Icone de Caixa" class="icone">
+                        <p class="qtd">@Model.ItemsInStock</p>
+                        <p class = "DescTexto">Quantidade em mãos</p>
+                    </div>
+                    <div class="linha2"></div>
+                    <div class="AReceber">
+                        <img src="~/images/On the way.png" alt="Icone a receber" class="icone">
+                        <p class="qtd">200</p>
+                        <p class = "DescTexto">A receber</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="caixa">
+                <p class = "tituloResumo">Total de itens</p>
+                <div class="ResumoTotal">
+                    <div class="TotalItens">
+                        <img src="~/images/Suppliers.png" alt="Icone de Caixa" class="icone">
+                        <p class="qtd">@Model.TotalItems</p>
+                        <p class = "DescTexto">Número total de itens</p>
+                    </div>
+                    <div class="linha2"></div>
+                    <div class="Receber">
+                        <img src="~/images/Categories.png" alt="Icone de Caixa" class="icone">
+                        <p class="qtd">21</p>
+                        <p class = "DescTexto">Para receber</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
