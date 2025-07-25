@@ -19,5 +19,8 @@ namespace ManagementSystem.Services
         public IEnumerable<FootwearGetAllDTO> GetAllItems() => _repo.GetAll();
         public void UpdateItemInfo(int id, Footwear updatedItem) => _repo.Update(id, updatedItem);
         public Footwear GetById(int id) => _repo.GetById(id);
+
+        public void CountSumQuantity(int id) => _repo.IncreaseQuantity(id);
+        public void CountDecreaseQuantity(int id) => _repo.DecreaseQuantity(id);
     }
 }

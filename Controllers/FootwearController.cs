@@ -177,12 +177,32 @@ namespace ManagementSystem.Controllers
         {
             try
             {
-                return Json(new { success = true, newQuantity = request.Quantity });
+                var footwear = _footwearService.GetById(request.Id);
+                if (footwear == null)
+                {
+                    return Json(new { success = false, message = "Calçado não encontrado" });
+                }
+
+                if (request.Action == "increase")
+                {
+                    _footwearService.CountSumQuantity(request.Id);
+                }
+                else if (request.Action == "decrease")
+                {
+                    _footwearService.CountDecreaseQuantity(request.Id); 
+                }
+
+                var allItems = _footwearService.GetAllItems();
+                var updated = allItems.FirstOrDefault(f => f.Footwear.Id == request.Id);
+                int updatedQty = updated?.Quantity ?? 0;
+
+                return Json(new { success = true, newQuantity = updatedQty });
             }
             catch (Exception ex)
             {
                 return Json(new { success = false, message = ex.Message });
             }
         }
+
     }
 }
