@@ -30,7 +30,7 @@ namespace ManagementSystem.Controllers
                 return NotFound();
             }
 
-            return View(footwear);
+            return PartialView("_DetailsModalPartial", footwear);
         }
 
         public IActionResult Create()
