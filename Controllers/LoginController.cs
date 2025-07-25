@@ -23,7 +23,7 @@ public class LoginController : Controller
             if (model.User == userCorreto && model.Senha == senhaCorreta)
             {
                 ViewBag.MensagemSucesso = "Login realizado com sucesso!";
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Dashboard");
             }
             else
             {
