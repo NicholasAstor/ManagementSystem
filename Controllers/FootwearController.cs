@@ -181,5 +181,22 @@ namespace ManagementSystem.Controllers
                 return Json(new { success = false, message = ex.Message });
             }
         }
+
+
+        //MÉTODOS TEMPORÁRIOS PARA TESTE DE FRONTEND:
+
+        // Este método responde ao link /Footwear/Equipment
+        // e vai procurar a view /Views/Footwear/Equipment.cshtml
+        public IActionResult Equipment()
+        {
+            return View();
+        }
+
+        // Este método responde ao link /Footwear/Footwear
+        // e vai procurar a view /Views/Footwear/Footwear.cshtml
+        public IActionResult Footwear()
+        {
+            return View();
+        }
     }
 }
