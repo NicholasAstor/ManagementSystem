@@ -30,7 +30,7 @@ namespace ManagementSystem.Controllers
                 return NotFound();
             }
 
-            return View(footwear);
+            return PartialView("_DetailsModalPartial", footwear);
         }
 
         public IActionResult Create()
@@ -109,41 +109,44 @@ namespace ManagementSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, FootwearEditViewModel model)
+        public IActionResult Edit(int id, FootwearEditViewModel model, string? returnUrl)
         {
-            if (id != model.Id)
+            try
             {
-                return NotFound();
-            }
+                var footwear = _footwearService.GetById(id);
 
-            if (ModelState.IsValid)
+                if (footwear == null)
+                {
+                    return NotFound();
+                }
+
+                footwear.SKU = model.SKU;
+                footwear.Brand = model.Brand;
+                footwear.Modalities = model.Modalities;
+                footwear.Name = model.Name;
+                footwear.Image = model.Image;
+                footwear.Description = model.Description;
+                footwear.Price = model.Price;
+                footwear.ManufacturedIn = model.ManufacturedIn;
+                footwear.Size = model.Size;
+                footwear.TypeOfFootwear = model.TypeOfFootwear;
+
+                _footwearService.UpdateItemInfo(id, footwear);
+
+                TempData["SuccessMessage"] = "Calçado atualizado com sucesso!";
+
+                if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                {
+                    return Redirect(returnUrl);
+                }
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
             {
-                try
-                {
-                    var updatedFootwear = new Footwear(
-                        model.SKU,
-                        model.Brand,
-                        model.Modalities,
-                        model.Name,
-                        model.Image,
-                        model.Description,
-                        model.Price,
-                        model.ManufacturedIn,
-                        model.Size,
-                        model.TypeOfFootwear
-                    );
-
-                    _footwearService.UpdateItemInfo(id, updatedFootwear);
-
-                    TempData["SuccessMessage"] = "Calçado atualizado com sucesso!";
-                    return RedirectToAction(nameof(Index));
-                }
-                catch (Exception ex)
-                {
-                    ModelState.AddModelError("", $"Erro ao atualizar calçado: {ex.Message}");
-                }
+                ModelState.AddModelError("", $"Erro ao carregar calçado para edição: {ex.Message}");
             }
-
+            
             return View(model);
         }
 
@@ -174,7 +177,26 @@ namespace ManagementSystem.Controllers
         {
             try
             {
-                return Json(new { success = true, newQuantity = request.Quantity });
+                var footwear = _footwearService.GetById(request.Id);
+                if (footwear == null)
+                {
+                    return Json(new { success = false, message = "Calçado não encontrado" });
+                }
+
+                if (request.Action == "increase")
+                {
+                    _footwearService.CountSumQuantity(request.Id);
+                }
+                else if (request.Action == "decrease")
+                {
+                    _footwearService.CountDecreaseQuantity(request.Id); 
+                }
+
+                var allItems = _footwearService.GetAllItems();
+                var updated = allItems.FirstOrDefault(f => f.Footwear.Id == request.Id);
+                int updatedQty = updated?.Quantity ?? 0;
+
+                return Json(new { success = true, newQuantity = updatedQty });
             }
             catch (Exception ex)
             {
@@ -182,21 +204,5 @@ namespace ManagementSystem.Controllers
             }
         }
 
-
-        //MÉTODOS TEMPORÁRIOS PARA TESTE DE FRONTEND:
-
-        // Este método responde ao link /Footwear/Equipment
-        // e vai procurar a view /Views/Footwear/Equipment.cshtml
-        public IActionResult Equipment()
-        {
-            return View();
-        }
-
-        // Este método responde ao link /Footwear/Footwear
-        // e vai procurar a view /Views/Footwear/Footwear.cshtml
-        public IActionResult Footwear()
-        {
-            return View();
-        }
     }
 }

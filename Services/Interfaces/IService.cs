@@ -10,5 +10,7 @@ namespace ManagementSystem.Services.Interfaces
         IEnumerable<Y> GetAllItems();
         void UpdateItemInfo(int id, T updatedItem);
         T GetById(int id);
+        void CountSumQuantity(int id);
+        void CountDecreaseQuantity(int id);
     }
 }

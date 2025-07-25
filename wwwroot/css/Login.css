@@ -80,12 +80,16 @@ html{
     font-weight: 200;
 }
 
-.input-box i{
+.input-box .show-password {
     position: absolute;
-    right: 20px;
-    top: 30%;
-    font-size: 20px;
-
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border: none;
+    outline: none;
+    cursor: pointer;
 }
 
 .wrapper .Lembrar{
