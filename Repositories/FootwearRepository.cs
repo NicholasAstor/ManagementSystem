@@ -93,5 +93,31 @@ namespace ManagementSystem.Repositories
         }
 
         public Footwear GetById(int id) => _listFootwears.FirstOrDefault(i => i.Id == id);
+
+        public void IncreaseQuantity(int id)
+        {
+            var item =  GetById(id);
+            if (item != null)
+            {
+                var value =  _footwearsDict.GetValueOrDefault(item.SKU);
+                _footwearsDict[item.SKU] = ++value;
+                return;
+            }
+
+            return;
+        }
+        
+        public void DecreaseQuantity(int id)
+        {
+            var item =  GetById(id);
+            if (item != null)
+            {
+                var value =  _footwearsDict.GetValueOrDefault(item.SKU);
+                _footwearsDict[item.SKU] = --value;
+                return;
+            }
+
+            return;
+        }
     }
 }

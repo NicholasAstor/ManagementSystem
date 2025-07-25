@@ -9,5 +9,7 @@ namespace ManagementSystem.Repositories.Interfaces
         IEnumerable<Y> GetAll();
         void Update(int id, T updatedItem);
         T GetById(int id);
+        void IncreaseQuantity(int id);
+        void DecreaseQuantity(int id);
     }
 }

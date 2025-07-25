@@ -251,7 +251,7 @@
         document.getElementById('totalItemsDisplay').textContent = filteredFootwear.length;
     }
 
-    function updateQuantity(footwearId, action) { // Mockado
+    function updateQuantity(footwearId, action) { 
         const qtyElement = document.getElementById(`qty-${footwearId}`);
         let currentQty = parseInt(qtyElement.textContent);
         
@@ -260,6 +260,25 @@
         } else if (action === 'decrease' && currentQty > 0) {
             currentQty--;
         }
+        
+        fetch("Footwear/UpdateQuantity/", {
+            method: "POST",
+            headers: { 
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id: footwearId, action: action })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success) {
+                    qtyElement.textContent = data.newQuantity;
+                    const minusBtn = qtyElement.previousElementSibling;
+                    minusBtn.disabled = data.newQuantity <= 0;
+                } else {
+                    alert("Erro ao atualizar quantidade.")
+                }
+            })
+            .catch(error => console.error("Erro: ", error));
         
         const item = allFootwear.find(f => f.footwear.id === footwearId);
         if (item) {
