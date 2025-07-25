@@ -14,22 +14,15 @@ namespace ManagementSystem.Repositories
         {
             _listFootwears = new List<Footwear>() // Tirar essas coisas mockadas depois
             {
-                new Footwear("SKU001", Brand.Nike, Modalities.Futebol, "Nike Mercurial", "", "High performance soccer footwear", 120.00, DateTime.Now, 42, TypeOfFootwear.Futsal),
-                new Footwear("SKU002", Brand.Adidas, Modalities.Futebol, "Adidas Predator", "", "Precision and control on the field", 130.00, DateTime.Now, 41, TypeOfFootwear.Trava),
-                new Footwear("SKU003", Brand.Puma, Modalities.Futebol, "Puma Future", "", "Innovative design for agility", 125.00, DateTime.Now, 43, TypeOfFootwear.Society),
-                new Footwear("SKU007", Brand.Asics, Modalities.Basquete, "Asics Gel", "", "Absorção de impacto", 170.00, DateTime.Now, 41, TypeOfFootwear.Casual),
-                new Footwear("SKU008", Brand.Umbro, Modalities.Futebol, "Umbro Speciali", "", "Tradicional e resistente", 110.00, DateTime.Now, 42, TypeOfFootwear.Futsal),
-                new Footwear("SKU009", Brand.NewBalance, Modalities.Corrida, "New Balance Fresh Foam", "", "Conforto e leveza", 180.00, DateTime.Now, 43, TypeOfFootwear.Casual),
-
+                new Footwear("SKU001", Brand.Nike, Modalities.Futebol, "Nike Mercurial", "https://imgnike-a.akamaihd.net/1300x1300/0141377TA9.jpg", "High performance soccer footwear", 120.00, DateTime.Now, 42, TypeOfFootwear.Futsal),
+                new Footwear("SKU002", Brand.Adidas, Modalities.Futebol, "Adidas Predator", "https://imgmarketplace.lojasrenner.com.br/20001/2764/7010702299945/7510705208640/0.jpeg", "Precision and control on the field", 130.00, DateTime.Now, 41, TypeOfFootwear.Trava),
+                new Footwear("SKU003", Brand.Puma, Modalities.Futebol, "Puma Future", "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.footballshirtculture.com%2Fimages%2F2022%2Fpuma-future-ultimate-energy-fg-ag-ultra-blue-yellow-alert-luminous-pink-50549.jpg&f=1&nofb=1&ipt=57eebfbd514742a9aa524ebd663caa8198a3540eba69167ecf272ce5f57563e3", "Innovative design for agility", 125.00, DateTime.Now, 43, TypeOfFootwear.Society)
             };
             _footwearsDict = new Dictionary<string, int>()
             {
                 { "SKU001", 1 },
                 { "SKU002", 2 },
-                { "SKU003", 3 },
-                { "SKU007", 2 },
-                { "SKU008", 3 },
-                { "SKU009", 1 },
+                { "SKU003", 3 }
             };
         }
 
@@ -100,5 +93,31 @@ namespace ManagementSystem.Repositories
         }
 
         public Footwear GetById(int id) => _listFootwears.FirstOrDefault(i => i.Id == id);
+
+        public void IncreaseQuantity(int id)
+        {
+            var item =  GetById(id);
+            if (item != null)
+            {
+                var value =  _footwearsDict.GetValueOrDefault(item.SKU);
+                _footwearsDict[item.SKU] = ++value;
+                return;
+            }
+
+            return;
+        }
+        
+        public void DecreaseQuantity(int id)
+        {
+            var item =  GetById(id);
+            if (item != null)
+            {
+                var value =  _footwearsDict.GetValueOrDefault(item.SKU);
+                _footwearsDict[item.SKU] = --value;
+                return;
+            }
+
+            return;
+        }
     }
 }
